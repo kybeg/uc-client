@@ -5,7 +5,7 @@ import argparse
 import hashlib
 import os
 
-from colorama import Style, Fore
+from colorama import Style, Fore, Back
 
 parser = argparse.ArgumentParser(prog='uc')
 subparser = parser.add_subparsers(dest='command')
@@ -48,6 +48,7 @@ if arg.command == 'status':
     
     token = getToken()
     endpoint = "http://" + arg.server + ":" + arg.port + "/get/me"
+    verbose("executing the following url: " + endpoint)
     headers = {"Authorization": "Bearer " + token}
     print(requests.get(endpoint, headers=headers).json())
 

@@ -13,6 +13,9 @@ git clone https://github.com/kybeg/uc-client.git
 
 if cp uc-client/uc /usr/local/bin/uc; then
 
+# set execution permissions
+chmod +x /usr/local/bin/uc
+
 # remove the repo
 
 rm -r uc-client
