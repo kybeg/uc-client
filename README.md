@@ -15,7 +15,7 @@ system" used in DCSG2003 at NTNU.
 The easiest way to install the client is by running the following
 command:
 
-curl ... | sudo sh
+curl https://raw.githubusercontent.com/kybeg/uc-client/main/install.sh | sudo sh
 
 Test your installation the following way: 
 
