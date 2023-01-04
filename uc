@@ -41,7 +41,7 @@ def getToken():
         print("Could not find authentication information. Did you source the OpenStack RC file?")
         quit(1)
     
-    tokenstring = username + password +"\n"
+    tokenstring = username + password
     return hashlib.md5(tokenstring.encode('UTF-8')).hexdigest()
 
 if arg.command == 'status':
