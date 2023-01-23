@@ -8,7 +8,7 @@ import colorama
 import json
 from colorama import Style, Fore, Back
 
-VERSION = 0.1
+VERSION = 0.2
 
 parser = argparse.ArgumentParser(prog='uc')
 subparser = parser.add_subparsers(dest='command')
@@ -90,9 +90,10 @@ if arg.command == 'status':
             print ("Last check @" + timestamp +": " + check_result )
 #            print ("Download time: " + str(result["last_check"]["time_to_download"]) + " seconds")
             reward_color = Fore.RED
-            if result["last_check"]["calculated_reward"] > 0:
-                reward_color = Fore.GREEN
-            print ("Kyrrecoins earned: " + reward_color + str(result["last_check"]["calculated_reward"]))
+            if "calculated_reward" in result["last_check"]:
+                if  result["last_check"]["calculated_reward"] > 0:
+                    reward_color = Fore.GREEN
+                print ("Kyrrecoins earned: " + reward_color + str(result["last_check"]["calculated_reward"]))
             print (Fore.MAGENTA + "Report: ")
             print(result["last_check"]["result"])
 
