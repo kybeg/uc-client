@@ -105,10 +105,9 @@ if arg.command == 'set':
 
 if arg.command == 'traffic':    
     verbose("Traffic is set to " + end[0] )
-    if end[0] == "on":
-       token = getToken()
-       headers = {"Authorization": "Bearer " + token}
-       endpoint = "http://" + arg.server + ":" + arg.port + "/set/traffic?state=" + end[0]
-       printResult(requests.get(endpoint, headers=headers).json())
+    token = getToken()
+    headers = {"Authorization": "Bearer " + token}
+    endpoint = "http://" + arg.server + ":" + arg.port + "/set/traffic?state=" + end[0]
+    printResult(requests.get(endpoint, headers=headers).json())
 
     
