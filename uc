@@ -8,7 +8,7 @@ import colorama
 import json
 from colorama import Style, Fore, Back
 
-VERSION = 0.3
+VERSION = 0.4
 
 parser = argparse.ArgumentParser(prog='uc')
 subparser = parser.add_subparsers(dest='command')
@@ -115,6 +115,8 @@ if arg.command == 'traffic':
     printResult(requests.get(endpoint, headers=headers).json())
 
 if arg.command == 'name':    
+    if input("The name can only be set one time. Are you sure you want to set the name to " . end[0] ."?\n (y/n)") != "y":
+        exit()
     verbose("Name is set to " + end[0] )
     token = getToken()
     headers = {"Authorization": "Bearer " + token}
