@@ -8,7 +8,7 @@ import colorama
 import json
 from colorama import Style, Fore, Back
 
-VERSION = 0.2
+VERSION = 0.3
 
 parser = argparse.ArgumentParser(prog='uc')
 subparser = parser.add_subparsers(dest='command')
@@ -16,9 +16,12 @@ subparser = parser.add_subparsers(dest='command')
 status = subparser.add_parser('status')
 setcommand = subparser.add_parser('set')
 traffic_command = subparser.add_parser('traffic')
+name_command = subparser.add_parser('name')
+
 
 subparser_set = setcommand.add_subparsers()
 setoptions = subparser_set.add_parser('endpoint')
+
 
 parser.add_argument('-v','--verbose',dest="verbose",help='Turn verbosity on',default=False,action="store_true")
 parser.add_argument('-s','--server-ip',dest="server",help="What API to connect to",default="192.168.128.23")
@@ -109,6 +112,13 @@ if arg.command == 'traffic':
     token = getToken()
     headers = {"Authorization": "Bearer " + token}
     endpoint = "http://" + arg.server + ":" + arg.port + "/set/traffic?state=" + end[0]
+    printResult(requests.get(endpoint, headers=headers).json())
+
+if arg.command == 'name':    
+    verbose("Name is set to " + end[0] )
+    token = getToken()
+    headers = {"Authorization": "Bearer " + token}
+    endpoint = "http://" + arg.server + ":" + arg.port + "/set/name?name=" + end[0]
     printResult(requests.get(endpoint, headers=headers).json())
 
     
