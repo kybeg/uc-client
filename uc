@@ -115,7 +115,7 @@ if arg.command == 'traffic':
     printResult(requests.get(endpoint, headers=headers).json())
 
 if arg.command == 'name':    
-    if input("The name can only be set one time. Are you sure you want to set the name to " . end[0] ."?\n (y/n)") != "y":
+    if input("The name can only be set one time. Are you sure you want to set the name to " + end[0] + "?\n (y/n)") != "y":
         exit()
     verbose("Name is set to " + end[0] )
     token = getToken()
