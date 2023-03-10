@@ -8,7 +8,7 @@ import colorama
 import json
 from colorama import Style, Fore, Back
 
-VERSION = 0.4
+VERSION = 0.5
 
 parser = argparse.ArgumentParser(prog='uc')
 subparser = parser.add_subparsers(dest='command')
