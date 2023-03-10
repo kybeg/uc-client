@@ -13,6 +13,7 @@ VERSION = 0.4
 parser = argparse.ArgumentParser(prog='uc')
 subparser = parser.add_subparsers(dest='command')
 
+reports = subparser.add_parser('reports')
 status = subparser.add_parser('status')
 setcommand = subparser.add_parser('set')
 traffic_command = subparser.add_parser('traffic')
@@ -113,6 +114,13 @@ if arg.command == 'traffic':
     headers = {"Authorization": "Bearer " + token}
     endpoint = "http://" + arg.server + ":" + arg.port + "/set/traffic?state=" + end[0]
     printResult(requests.get(endpoint, headers=headers).json())
+
+if arg.command == 'reports':    
+    verbose("Fetching reports...")
+    token = getToken()
+    headers = {"Authorization": "Bearer " + token}
+    endpoint = "http://" + arg.server + ":" + arg.port + "/get/reports"
+    print(requests.get(endpoint, headers=headers).json())
 
 if arg.command == 'name':    
     if input("The name can only be set one time. Are you sure you want to set the name to " + end[0] + "?\n (y/n)") != "y":
