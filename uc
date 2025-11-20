@@ -46,12 +46,16 @@ def verbose(text):
 
 
 def printResult(result):
-    if ( result["result"] == "OK" ):
+    status = result.get("result")
+    message = result.get("message", "No message provided by server.")
+    if status == "OK":
         print("Response: " + Fore.GREEN + "OK" )
+    elif status:
+        print("Response: " + Fore.RED + status )
     else:
-        print("Response: " + Fore.RED + result["result"] )
+        print("Response: " + Fore.RED + "Unknown status")
 
-    print(result["message"])
+    print(message)
         
 def getToken():
     username = os.environ.get('OS_USERNAME')
@@ -70,7 +74,21 @@ if arg.command == 'status':
     endpoint = "http://" + arg.server + ":" + arg.port + "/get/me"
     verbose("executing the following url: " + endpoint)
     headers = {"Authorization": "Bearer " + token}
-    result = requests.get(endpoint, headers=headers).json()
+    response = requests.get(endpoint, headers=headers)
+    if response.status_code == 401:
+        print(Fore.RED + "Authentication failed. This might be because your group is not registered yet, or you did not source the OpenStack RC file.")
+        quit(1)
+    try:
+        result = response.json()
+    except ValueError:
+        print(Fore.RED + "Unexpected response from server (status " + str(response.status_code) + ").")
+        verbose(response.text)
+        quit(1)
+#    verbose("Result: " + str(result))
+    if "result" not in result:
+        print(Fore.RED + "Unexpected response from server (missing 'result' field).")
+        verbose(str(result))
+        quit(1)
     if "preferred_client" in result:
         checkVersion(result["preferred_client"])
     if result["result"] == "OK":
@@ -100,6 +118,8 @@ if arg.command == 'status':
                 print ("Kyrrecoins earned: " + reward_color + str(result["last_check"]["calculated_reward"]))
             print (Fore.MAGENTA + "Report: ")
             print(result["last_check"]["result"])
+    else:
+        printResult(result)
 
 if arg.command == 'set':    
     verbose("Requesting new endpoint to be set to " + end[0] )
