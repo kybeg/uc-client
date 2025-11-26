@@ -46,3 +46,37 @@ enable traffic.
 Disabling traffic is not currently supported. As in real life: once
 you go live, you cannot just stop the rest of the world..
 
+# Storage key/value
+
+The API now supports per-user key/value storage. Keys must match
+`^[A-Za-z0-9._:/-]+$` and are limited to 256 chars; values are limited
+to 10 KiB. Slashes are allowed in keys (they are treated as literal
+characters on the server).
+
+## Basic commands
+
+- List keys (optionally by prefix): `uc store list --prefix app/`
+- Write or overwrite: `uc store put my/key "some value"` or
+  `uc store put my/key -f file.txt` or `uc store put my/key -f -` to
+  read from STDIN. Add `--force` to overwrite existing keys.
+- Fetch value: `uc store get my/key`
+- Show metadata: `uc store info my/key`
+- Delete: `uc store delete my/key`
+- Expanded fetch (expands embedded placeholders):  
+  `uc store eget my/key` (add `--strict` to fail if a nested key is
+  missing)
+
+## Example with embedded values
+
+```
+uc store put db1/ip 10.10.10.1
+uc store put curl_command "curl http://{db1/ip}/index.html"
+uc store get curl_command
+curl http://{db1/ip}/index.html
+uc store eget curl_command
+curl http://10.10.10.1/index.html
+```
+
+`uc store eget` performs server-side recursive expansion of
+`{some/key}` placeholders (up to the server’s depth limit), letting you
+template commands or configuration snippets from stored values.
