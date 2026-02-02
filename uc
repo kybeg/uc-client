@@ -12,7 +12,7 @@ from urllib.parse import quote
 from requests.utils import requote_uri
 from colorama import Style, Fore, Back
 
-VERSION = 0.7
+VERSION = 0.8
 
 parser = argparse.ArgumentParser(prog='uc')
 subparser = parser.add_subparsers(dest='command')
@@ -192,7 +192,7 @@ if arg.command == 'status':
 #            print ("Download time: " + str(result["last_check"]["time_to_download"]) + " seconds")
             reward_color = Fore.RED
             if "calculated_reward" in result["last_check"]:
-                if  result["last_check"]["calculated_reward"] > 0:
+                if  float(result["last_check"]["calculated_reward"]) > 0:
                     reward_color = Fore.GREEN
                 print ("Kyrrecoins earned: " + reward_color + str(result["last_check"]["calculated_reward"]))
             print (Fore.MAGENTA + "Report: ")
